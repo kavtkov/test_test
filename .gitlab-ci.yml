@@ -1,0 +1,29 @@
+stages:
+  - test
+  - deploy
+
+variables:
+  PYTHON_VERSION: "3.10"
+  SCRIPT_NAME: "1.py"
+
+# Общие настройки для всех заданий
+default:
+  image: python:$PYTHON_VERSION
+
+test-job:
+  stage: test
+  script:
+    - python $SCRIPT_NAME  # Запуск основного скрипта
+
+deploy-job:
+  stage: deploy
+  script:
+    - echo "Деплой скрипта $SCRIPT_NAME"
+    - # Здесь добавьте команды для деплоя вашего скрипта
+  only:
+    - main  # Запуск только для основной ветки
+
+rules:
+  - if: $CI_COMMIT_REF_NAME == "main"
+    when: always
+  - when: never
